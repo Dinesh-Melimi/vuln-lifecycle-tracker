@@ -1,0 +1,5 @@
+host,plugin_id,name,severity,first_seen
+web01,42873,SSL Medium Strength Cipher Suites,Medium,2026-07-01
+db01,57582,SSL Self-Signed Certificate,Medium,2026-06-15
+fs01,97833,SMBv1 Enabled (MS17-010),Critical,2026-09-01
+web02,187315,OpenSSH regreSSHion (CVE-2024-6387),High,2026-10-01

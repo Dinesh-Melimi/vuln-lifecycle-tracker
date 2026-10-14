@@ -1,0 +1,7 @@
+host,tag
+web01,web
+web02,web
+db01,database
+fs01,file-servers
+hr-app,hr
+atm-gw01,branch

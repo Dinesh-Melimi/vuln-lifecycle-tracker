@@ -1,0 +1,3 @@
+host,plugin_id,approved_by,reason,expires
+db01,57582,CISO,Internal-only cert; replacement scheduled,2026-12-31
+web01,42873,IT Manager,Legacy client support,2026-09-30
