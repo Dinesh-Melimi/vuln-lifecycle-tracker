@@ -5,6 +5,7 @@ from datetime import date
 
 from . import oversight
 from .core import build, load_owners, read_csv, summary
+from .qualys import load_qualys
 
 ORDER = {"Overdue": 0, "Open": 1, "Exception": 2, "Not rescanned": 3, "Verified closed": 4}
 SEV = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}
@@ -19,12 +20,15 @@ def main(argv=None):
     ap.add_argument("--exceptions", required=True)
     ap.add_argument("--today", default=date.today().isoformat())
     ap.add_argument("--out", help="Write tracked findings CSV (audit evidence)")
+    ap.add_argument("--format", choices=["generic", "qualys"], default="generic",
+                    help="Scan export format for --prev/--curr (qualys = VMDR detection CSV)")
     ap.add_argument("--oversight-report", help="Write an independent oversight report (Markdown)")
     ap.add_argument("--claims", help="Closure claims CSV from the remediation tracker (host,plugin_id,claimed_by,evidence)")
     ap.add_argument("--patches", help="Patch status CSV (host,patch,status,rationale,approval_due,approved_by)")
     a = ap.parse_args(argv)
     today = date.fromisoformat(a.today)
-    f, gaps, expired = build(read_csv(a.prev), read_csv(a.curr), read_csv(a.assets),
+    scans = load_qualys if a.format == "qualys" else read_csv
+    f, gaps, expired = build(scans(a.prev), scans(a.curr), read_csv(a.assets),
                              load_owners(read_csv(a.owners)), read_csv(a.exceptions), today)
     f.sort(key=lambda x: (ORDER[x["status"]], SEV.get(x["severity"], 9)))
     s = summary(f, gaps, expired)

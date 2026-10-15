@@ -1,0 +1,6 @@
+IP,DNS,NetBIOS,QID,Title,Severity,CVSS3.1 Base,CVE ID,Threat Intel,QDS,First Detected,Last Detected,Status
+10.0.1.20,fs01.corp.example.com,FS01,91345,Microsoft Windows SMBv1 Multiple Vulnerabilities (MS17-010),5,8.1,CVE-2017-0144,Active Attacks;CISA Known Exploited,95,09/01/2026 04:12:00,10/14/2026 04:10:00,Active
+10.0.2.15,web02.corp.example.com,WEB02,42400,OpenSSH regreSSHion Remote Code Execution,5,8.1,CVE-2024-6387,Exploit Public,88,10/01/2026 02:00:00,10/14/2026 02:05:00,New
+10.0.3.9,db01.corp.example.com,DB01,38173,SSL Certificate - Self-Signed Certificate,2,,,,,06/15/2026 01:00:00,10/14/2026 01:00:00,Active
+10.0.2.14,web01.corp.example.com,WEB01,38140,SSL Server Supports Weak Encryption Vulnerability,3,5.9,,,40,07/01/2026 03:00:00,10/14/2026 03:00:00,Active
+10.0.2.14,web01.corp.example.com,WEB01,376187,Apache Log4j Remote Code Execution (Log4Shell),5,10.0,CVE-2021-44228,Active Attacks,100,08/20/2026 03:00:00,10/01/2026 03:00:00,Fixed

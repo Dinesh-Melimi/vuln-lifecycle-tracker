@@ -52,3 +52,12 @@ python -m vlt.cli --prev samples/scan_prev.csv --curr samples/scan_curr.csv --as
 - 1 closure claims rejected, 0 pending evidence
 - 1 data-quality issues; 2 patch-not-deployed decisions need action
 ```
+
+## Qualys VMDR exports
+
+`--format qualys` reads Qualys VMDR detection CSVs directly (QID, Title, Severity 1-5, CVSS3.1 Base, CVE ID, Threat Intel, QDS, First Detected, Status). Severity comes from the CVSS v3 base score when present, otherwise the Qualys 1-5 level; rows marked Fixed are skipped so closure is still proven by the rescan. Each row also carries a 0-100 risk value (Qualys QDS, or CVSS plus threat-intel signals such as active attacks or CISA KEV) for ordering work within a severity.
+
+```bash
+python -m vlt.cli --format qualys --prev qualys_prev.csv --curr samples/qualys_curr.csv \
+  --assets samples/assets.csv --owners samples/owners.csv --exceptions samples/exceptions.csv
+```
