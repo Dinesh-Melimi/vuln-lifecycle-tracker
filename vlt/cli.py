@@ -3,6 +3,7 @@ import csv
 import sys
 from datetime import date
 
+from . import oversight
 from .core import build, load_owners, read_csv, summary
 
 ORDER = {"Overdue": 0, "Open": 1, "Exception": 2, "Not rescanned": 3, "Verified closed": 4}
@@ -18,6 +19,9 @@ def main(argv=None):
     ap.add_argument("--exceptions", required=True)
     ap.add_argument("--today", default=date.today().isoformat())
     ap.add_argument("--out", help="Write tracked findings CSV (audit evidence)")
+    ap.add_argument("--oversight-report", help="Write an independent oversight report (Markdown)")
+    ap.add_argument("--claims", help="Closure claims CSV from the remediation tracker (host,plugin_id,claimed_by,evidence)")
+    ap.add_argument("--patches", help="Patch status CSV (host,patch,status,rationale,approval_due,approved_by)")
     a = ap.parse_args(argv)
     today = date.fromisoformat(a.today)
     f, gaps, expired = build(read_csv(a.prev), read_csv(a.curr), read_csv(a.assets),
@@ -38,6 +42,21 @@ def main(argv=None):
             w = csv.DictWriter(fh, fieldnames=list(f[0].keys()))
             w.writeheader()
             w.writerows(f)
+    if a.oversight_report:
+        exc_rows = read_csv(a.exceptions)
+        report = oversight.render(
+            today,
+            oversight.challenge_exceptions(exc_rows, f, today),
+            oversight.closure_assurance(read_csv(a.claims) if a.claims else [], f),
+            oversight.data_quality(f, read_csv(a.assets), today),
+            oversight.patch_oversight(read_csv(a.patches) if a.patches else [], today),
+            oversight.escalations(f, today),
+            oversight.aging(f),
+            oversight.owner_scorecard(f),
+        )
+        with open(a.oversight_report, "w") as fh:
+            fh.write(report)
+        print(f"Oversight report written to {a.oversight_report}")
     return 1 if s["overdue"] else 0
 
 

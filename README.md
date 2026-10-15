@@ -28,3 +28,27 @@ Expired exceptions (back in scope): web01 / 42873
 ```
 
 `tracked.csv` is the audit evidence. Exit code 1 when anything is overdue, so it can run after each scan and alert.
+
+## Independent oversight report
+
+The tracker answers "where is each finding?". `--oversight-report` answers "should we believe it?", the second-line review a risk or oversight team runs:
+
+```bash
+python -m vlt.cli --prev samples/scan_prev.csv --curr samples/scan_curr.csv --assets samples/assets.csv \
+  --owners samples/owners.csv --exceptions samples/exceptions.csv --today 2026-10-14 \
+  --claims samples/closure_claims.csv --patches samples/patches.csv --oversight-report oversight.md
+```
+
+- **Risk acceptance challenge**: rationale and compensating control present, approved at the right authority for the severity (Critical needs the CISO), term within the limit, not expired or about to expire, and retired once the finding is gone
+- **Closure assurance**: each closure claimed in the remediation tracker is accepted only if a rescan confirms it; a claim on a finding still detected is rejected
+- **Patch oversight**: every patch-not-deployed decision needs a rationale and an approval before its due date
+- **Data quality**: missing owners, hosts not in inventory, unknown severities, impossible dates, duplicate records
+- **Escalation**: overdue findings routed to the owner, or to central escalation when Critical or more than 30 days late
+- **Trends**: aging by severity (0-30 / 31-60 / 61-90 / 90+) and an owner accountability scorecard for leadership
+
+```
+- 2 overdue findings (1 need central escalation)
+- 1 risk acceptances challenged
+- 1 closure claims rejected, 0 pending evidence
+- 1 data-quality issues; 2 patch-not-deployed decisions need action
+```

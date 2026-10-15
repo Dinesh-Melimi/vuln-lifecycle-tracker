@@ -1,0 +1,4 @@
+host,patch,status,rationale,approval_due,approved_by
+fs01,KB5034441,not_deployed,,2026-10-01,
+db01,KB5031356,not_deployed,Vendor certification pending for DB engine,2026-11-15,
+web02,KB5033375,deployed,,,

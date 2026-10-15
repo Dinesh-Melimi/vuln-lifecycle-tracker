@@ -1,0 +1,3 @@
+host,plugin_id,claimed_by,evidence
+web01,156860,Digital Banking,Change CHG0041 patched Log4j
+fs01,97833,Infrastructure,Change CHG0039 disabled SMBv1
