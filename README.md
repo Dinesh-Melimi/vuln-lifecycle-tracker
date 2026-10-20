@@ -53,6 +53,28 @@ python -m vlt.cli --prev samples/scan_prev.csv --curr samples/scan_curr.csv --as
 - 1 data-quality issues; 2 patch-not-deployed decisions need action
 ```
 
+## Scan operations health
+
+A clean result from a scan that never logged in is a blind spot, not good news. `vlt.scanops_cli` checks the scans themselves:
+
+- **Credentialed coverage** from Nessus/Tenable plugin output: 19506 (`Credentialed checks : yes`), 21745 (authentication failure, local checks not run) and 110385 (logged in, insufficient privileges). Each host is marked authenticated, failed, insufficient or unauthenticated
+- **Coverage by asset class**: authenticated % per inventory tag against a target (default 95%), with unscanned assets counted as gaps
+- **Schedule health**: scans that missed their cadence, did not complete, or covered too few of their targeted hosts
+- **Specific actions**: fix the credential and rescan, grant the scan account privileges, or move the host into a credentialed policy
+
+```bash
+python -m vlt.scanops_cli --assets samples/assets.csv --plugins samples/scan_plugins.csv \
+  --schedules samples/scan_schedules.csv --today 2026-10-14 --out scanops.md
+```
+
+```
+Authenticated coverage 33%: 1 credential failures, 1 insufficient privilege, 1 unauthenticated, 3 schedule issues
+  - web02: credentials failed, local checks did not run. Fix the scan credential ... and rescan
+  - Scan 'Weekly - Servers': missed schedule (last ran 16 days ago, expected every 7 days).
+```
+
+Exit code 1 on credential failures or schedule issues, so it can alert after each scan window.
+
 ## Qualys VMDR exports
 
 `--format qualys` reads Qualys VMDR detection CSVs directly (QID, Title, Severity 1-5, CVSS3.1 Base, CVE ID, Threat Intel, QDS, First Detected, Status). Severity comes from the CVSS v3 base score when present, otherwise the Qualys 1-5 level; rows marked Fixed are skipped so closure is still proven by the rescan. Each row also carries a 0-100 risk value (Qualys QDS, or CVSS plus threat-intel signals such as active attacks or CISA KEV) for ordering work within a severity.

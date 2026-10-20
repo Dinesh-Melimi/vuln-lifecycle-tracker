@@ -1,0 +1,6 @@
+scan,target_tag,frequency_days,last_run,hosts_targeted,hosts_scanned,status
+Weekly - Web,web,7,2026-10-12,2,2,Completed
+Weekly - Servers,file-servers,7,2026-09-28,1,1,Completed
+Monthly - Database,database,30,2026-10-01,1,1,Completed
+Monthly - Branch,branch,30,2026-10-05,1,0,Aborted
+Weekly - HR,hr,7,2026-10-11,1,1,Completed

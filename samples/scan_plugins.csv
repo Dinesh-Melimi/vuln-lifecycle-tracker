@@ -1,0 +1,10 @@
+host,plugin_id,plugin_output
+web01,19506,"Nessus version : 10.8.3
+Credentialed checks : yes, as 'svc_scan' via ssh"
+web02,19506,"Nessus version : 10.8.3
+Credentialed checks : no"
+web02,21745,"It was not possible to log into the remote host via ssh (invalid credentials)."
+db01,19506,"Credentialed checks : yes, as 'svc_scan' via ssh"
+db01,110385,"Credentials were valid but the account lacks privileges to run local checks (sudo required)."
+fs01,19506,"Credentialed checks : yes, as 'CORP\svc_scan' via SMB"
+hr-app,19506,"Credentialed checks : no"
